@@ -1,0 +1,15 @@
+{% extends 'hospital/homebase.html' %}
+{% load static %}
+
+<!-- delete_prescription.html -->
+
+<h1>Delete Prescription</h1>
+
+<p>Are you sure you want to delete this prescription?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Delete</button>
+</form>
+
+<a href="{% url 'prescription_list' %}">Cancel</a>

@@ -1,0 +1,17 @@
+<!-- prescription_list.html -->
+<h1>Prescription List</h1>
+
+<ul>
+  {% for prescription in prescriptions %}
+    <li>
+      <strong>Medication:</strong> {{ prescription.medication }}<br>
+      <strong>Dosage:</strong> {{ prescription.dosage }}<br>
+      <strong>Start Date:</strong> {{ prescription.start_date }}<br>
+      <strong>End Date:</strong> {{ prescription.end_date }}
+    </li>
+  {% empty %}
+    <li>No prescriptions available.</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'create_prescription' %}">Create New Prescription</a>
