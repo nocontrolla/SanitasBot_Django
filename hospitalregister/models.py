@@ -33,7 +33,6 @@ class Patient(models.Model):
     profile_pic= models.ImageField(upload_to='profile_pic/PatientProfilePic/',null=True,blank=True)
     address = models.CharField(max_length=40)
     mobile = models.CharField(max_length=20,null=False)
-    symptoms = models.CharField(max_length=100,null=False)
     emergencyContactName = models.CharField(max_length=30)
     emergencyContactPhone = models.CharField(max_length=15)
     assignedDoctorId = models.PositiveIntegerField(null=True)
