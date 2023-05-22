@@ -11,7 +11,7 @@ from django.db.models import Q
 from hospitalregister import views
 
 
-@login_required(login_url='doctorlogin')
+@login_required(login_url='hospital/doctorlogin')
 @user_passes_test(views.is_doctor)
 def doctor_appointment_view(request): 
     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
@@ -19,7 +19,7 @@ def doctor_appointment_view(request):
 
 
 
-@login_required(login_url='doctorlogin')
+@login_required(login_url='hospital/doctorlogin')
 @user_passes_test(views.is_doctor)
 def doctor_view_appointment_view(request):
     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
@@ -33,7 +33,7 @@ def doctor_view_appointment_view(request):
 
 
 
-@login_required(login_url='doctorlogin')
+@login_required(login_url='hospital/doctorlogin')
 @user_passes_test(views.is_doctor)
 def doctor_delete_appointment_view(request):
     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
@@ -47,7 +47,7 @@ def doctor_delete_appointment_view(request):
 
 
 
-@login_required(login_url='doctorlogin')
+@login_required(login_url='hospital/doctorlogin')
 @user_passes_test(views.is_doctor)
 def delete_appointment_view(request,pk):
     appointment=models.Appointment.objects.get(id=pk)
@@ -64,7 +64,7 @@ def delete_appointment_view(request,pk):
 
 
 
-@login_required(login_url='patientlogin')
+@login_required(login_url='hospital/patientlogin')
 @user_passes_test(views.is_patient)
 def patient_appointment_view(request):
     patient=models.Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
@@ -73,7 +73,7 @@ def patient_appointment_view(request):
 
 
 
-@login_required(login_url='patientlogin')
+@login_required(login_url='hospital/patientlogin')
 @user_passes_test(views.is_patient)
 def patient_book_appointment_view(request):
     appointmentForm=forms.PatientAppointmentForm()
@@ -100,14 +100,14 @@ def patient_book_appointment_view(request):
 
 
 
-@login_required(login_url='adminlogin')
+@login_required(login_url='hospital/adminlogin')
 @user_passes_test(views.is_admin)
 def admin_appointment_view(request):
     return render(request,'appointment/admin_appointment.html')
 
 
 
-@login_required(login_url='adminlogin')
+@login_required(login_url='hospital/adminlogin')
 @user_passes_test(views.is_admin)
 def admin_view_appointment_view(request):
     appointments=models.Appointment.objects.all().filter(status=True)
@@ -115,7 +115,7 @@ def admin_view_appointment_view(request):
 
 
 
-@login_required(login_url='adminlogin')
+@login_required(login_url='hospital/adminlogin')
 @user_passes_test(views.is_admin)
 def admin_add_appointment_view(request):
     appointmentForm=forms.AppointmentForm()
@@ -135,7 +135,7 @@ def admin_add_appointment_view(request):
 
 
 
-@login_required(login_url='adminlogin')
+@login_required(login_url='hospital/adminlogin')
 @user_passes_test(views.is_admin)
 def admin_approve_appointment_view(request):
     #those whose approval are needed
@@ -144,7 +144,7 @@ def admin_approve_appointment_view(request):
 
 
 
-@login_required(login_url='adminlogin')
+@login_required(login_url='hospital/adminlogin')
 @user_passes_test(views.is_admin)
 def approve_appointment_view(request,pk):
     appointment=models.Appointment.objects.get(id=pk)
@@ -154,7 +154,7 @@ def approve_appointment_view(request,pk):
 
 
 
-@login_required(login_url='adminlogin')
+@login_required(login_url='hospital/adminlogin')
 @user_passes_test(views.is_admin)
 def reject_appointment_view(request,pk):
     appointment=models.Appointment.objects.get(id=pk)
