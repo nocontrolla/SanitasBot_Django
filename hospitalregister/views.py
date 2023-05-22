@@ -69,7 +69,7 @@ def doctor_signup_view(request):
             doctor=doctor.save()
             my_doctor_group = Group.objects.get_or_create(name='DOCTOR')
             my_doctor_group[0].user_set.add(user)
-        return HttpResponseRedirect('hospital/doctorlogin')
+        return HttpResponseRedirect('/hospital/doctorlogin')
     return render(request,'hospital/doctorsignup.html',context=mydict)
 
 

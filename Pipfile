@@ -8,6 +8,9 @@ django = "*"
 djangorestframework = "*"
 django-debug-toolbar = "*"
 mysqlclient = "*"
+xhtml2pdf = "*"
+django-widget-tweaks = "*"
+setuptools = "*"
 
 [dev-packages]
 
