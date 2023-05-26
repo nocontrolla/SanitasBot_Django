@@ -3,17 +3,19 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Brian Godwin || bgame</title>
+  <title>Welcome to Sanitas Healthcare</title>
 
 </head>
 
-<body>
-  {% include "hospital/navbar.html" %}
-  {%block content%}
+  <body>
+    {% include "hospital/navbar.html" %}
+    {% include "hospital/chatbot.html" %}
+    {%block content%}
+    
 
-  {%endblock content%}
-  {% include "hospital/footer.html" %}
-</body>
+    {%endblock content%}
+    {% include "hospital/footer.html" %}
+  </body>
 <!--
 developed By : Brian Godwin
 -->

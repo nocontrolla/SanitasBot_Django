@@ -43,16 +43,16 @@ def patientclick_view(request):
 
 
 def admin_signup_view(request):
-    form=forms.AdminSigupForm()
+    form=forms.AdminSignupForm()
     if request.method=='POST':
-        form=forms.AdminSigupForm(request.POST)
+        form=forms.AdminSignupForm(request.POST)
         if form.is_valid():
             user=form.save()
             user.set_password(user.password)
             user.save()
             my_admin_group = Group.objects.get_or_create(name='ADMIN')
             my_admin_group[0].user_set.add(user)
-            return HttpResponseRedirect('hospital/adminlogin')
+            return HttpResponseRedirect('/hospital/adminlogin')
     return render(request,'hospital/adminsignup.html',{'form':form})
 
 
@@ -393,10 +393,10 @@ def reject_patient_view(request,pk):
 def doctor_dashboard_view(request):
     #for three cards
     patientcount=Patient.objects.all().filter(status=True,assignedDoctorId=request.user.id).count()
-    appointmentcount=Appointment.objects.all().filter(status=True,doctorId=request.user.id).count()
+    appointmentcount=Appointment.objects.all().filter(status=True,doctor_id=request.user.id).count()
 
     #for  table in doctor dashboard
-    appointments=Appointment.objects.all().filter(status=True,doctorId=request.user.id).order_by('-id')
+    appointments=Appointment.objects.all().filter(status=True,doctor_id=request.user.id).order_by('-id')
     patientid=[]
     for a in appointments:
         patientid.append(a.patientId)
