@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required,user_passes_test
-from datetime import datetime,timedelta,date
+# from datetime import datetime,timedelta,date
 from django.conf import settings
 from django.db.models import Q
 from hospitalregister import views
@@ -17,6 +17,13 @@ def doctor_appointment_view(request):
     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
     return render(request,'appointment/doctor_appointment.html',{'doctor':doctor})
 
+
+@login_required(login_url='hospital/patientlogin')
+@user_passes_test(views.is_patient)
+def patient_view_appointment_view(request):
+    patient=models.Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
+    appointments=models.Appointment.objects.all().filter(patientId=request.user.id)
+    return render(request,'appointment/patient_view_appointment.html',{'appointments':appointments,'patient':patient})
 
 
 @login_required(login_url='hospital/doctorlogin')
@@ -96,7 +103,7 @@ def patient_book_appointment_view(request):
             appointment.status=False
             appointment.save()
         return HttpResponseRedirect('patient-view-appointment')
-    return render(request,'hospappointmentital/patient_book_appointment.html',context=mydict)
+    return render(request,'appointment/patient_book_appointment.html',context=mydict)
 
 
 
@@ -161,3 +168,4 @@ def reject_appointment_view(request,pk):
     appointment.delete()
     return redirect('admin-approve-appointment')
 #-------------------------------------------------------
+
