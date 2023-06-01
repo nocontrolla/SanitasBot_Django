@@ -101,7 +101,7 @@
     }
 
     .menu {
-      background: #5bc995;
+      background: #106e3e;
       height: 100vh;
       width: 240px;
       position: fixed;
@@ -282,14 +282,14 @@
     <header class="avatar">
       <img src="{% static "images/adminpropic.png" %}" />
       <br><br>
-      <h6>Admin</h6>
-      <h2>{{request.user.first_name}}</h2>
+      <h6 style="color: white;" >Admin</h6>
+      <h2 style="color: #f8fff7;" >{{request.user.first_name}}</h2>
     </header>
     <ul>
       <li tabindex="0" class="icon-dashboard"> <a style="color:white; text-decoration:none;" href="/hospital/admin-dashboard"><span>Dashboard</span></a> </li>
       <li tabindex="0" class="icon-customers"> <a style="color:white; text-decoration:none;" href="/hospital/admin-doctor"><span>Doctor</span></a></li>
       <li tabindex="0" class="icon-users"> <a style="color:white; text-decoration:none;" href="/hospital/admin-patient"><span>Patient</span></a></li>
-      <li tabindex="0" class="icon-calendar"> <a style="color:white; text-decoration:none;" href="/hospital/admin-appointment"><span>Appointment</span></a></li>
+      <li tabindex="0" class="icon-calendar"> <a style="color:white; text-decoration:none;" href="/appointment/admin-appointment"><span>Appointment</span></a></li>
     </ul>
   </nav>
 
@@ -298,7 +298,7 @@
 
     <!-- nav start -->
     <div class="bs-example">
-      <nav class="navbar navbar-expand-md  navbar-dark fixed-top" style="background:#337AB7;">
+      <nav class="navbar navbar-expand-md  navbar-dark fixed-top" style="background: -webkit-linear-gradient(left, #106e3e, #1cbb6c);">
         <a href="/admin-dashboard" class="navbar-brand">HOSPITAL MANAGEMENT</a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
           <span class="navbar-toggler-icon"></span>
@@ -306,7 +306,7 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
           <div class="navbar-nav" style=" margin-left: 90%;">
 
-            <a href="/hospital/logout" class="nav-item nav-link">Logout</a>
+            <a style="color: #a61111;" href="/hospital/logout" class="nav-item nav-link">Logout</a>
           </div>
         </div>
       </nav>

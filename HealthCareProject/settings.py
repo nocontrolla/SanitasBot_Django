@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'hospitalregister.apps.HospitalregisterConfig',
     'appointment.apps.AppointmentConfig',
     'reminder.apps.ReminderConfig',
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'HealthCareProject.urls'
@@ -157,3 +159,9 @@ EMAIL_HOST_PASSWORD = 'redemptor808' # host email password required
 # otherwise you will get SMTPAuthenticationError at /contactus
 # this process is required because google blocks apps authentication by default
 EMAIL_RECEIVING_USER = ['to@gmail.com'] # email on which you will receive messages sent from website
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
