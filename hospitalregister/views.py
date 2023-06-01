@@ -93,8 +93,8 @@ def patient_signup_view(request):
             patient=patient.save()
             my_patient_group = Group.objects.get_or_create(name='PATIENT')
             my_patient_group[0].user_set.add(user)
-        return HttpResponseRedirect('hospital/patientlogin')
-    return render(request,'hospital/patientsignup.html',context=mydict)
+        return HttpResponseRedirect('/hospital/patientlogin')
+    return render(request, 'hospital/patientsignup.html',context=mydict)
 
 
 #-----------for checking user is doctor , patient or admin(by bgame)
@@ -562,10 +562,6 @@ def search_doctor_view(request):
 #--------------------------------------------------------------------------------
 #------------------------ PATIENT RELATED VIEWS END ------------------------------
 #--------------------------------------------------------------------------------
-
-
-
-
 
 
 

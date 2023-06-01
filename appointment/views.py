@@ -30,7 +30,7 @@ def patient_view_appointment_view(request):
 @user_passes_test(views.is_doctor)
 def doctor_view_appointment_view(request):
     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
-    appointments=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id)
+    appointments=models.Appointment.objects.all().filter(status=True, doctor_id=request.user.id)
     patientid=[]
     for a in appointments:
         patientid.append(a.patientId)
@@ -44,7 +44,7 @@ def doctor_view_appointment_view(request):
 @user_passes_test(views.is_doctor)
 def doctor_delete_appointment_view(request):
     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
-    appointments=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id)
+    appointments=models.Appointment.objects.all().filter(status=True,doctor_id=request.user.id)
     patientid=[]
     for a in appointments:
         patientid.append(a.patientId)

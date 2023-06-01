@@ -26,7 +26,7 @@ urlpatterns = [
 
     path('hospital/', include('hospitalregister.urls')),
 
-    path('appointments/', include('appointment.urls')),
+    path('appointment/', include('appointment.urls')),
 
     path('reminder/', include('reminder.urls')),
 
