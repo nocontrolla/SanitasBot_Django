@@ -11,7 +11,7 @@
     .note {
       text-align: center;
       height: 80px;
-      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+      background: -webkit-linear-gradient(left, #106e3e, #1cbb6c);
       color: #fff;
       font-weight: bold;
       line-height: 80px;
@@ -67,20 +67,32 @@
       <div class="form-content">
         <div class="row">
           <div class="col-md-12">
+            <a>Enter Brief Description Of your Condition</a>
             <div class="form-group">
               {% render_field appointmentForm.description class="form-control" placeholder="Description" %}
             </div>
+            <a>Choose the Doctor you want To See</a>
             <div class="form-group">
               {% render_field appointmentForm.doctorId class="form-control" placeholder="doctor" %}
             </div>
-            
-
+            <div class="form-group">
+              <a>Choose the Day You Want to Book with The Doctor</a>
+              {% render_field appointmentForm.date class="form-control" type="date" %}
+            </div>
+            <a>Appointment Start Time</a>
+            <div class="form-group">
+              {% render_field appointmentForm.start_time class="form-control"  type="time" placeholder="Appointment Start Time" %}
+            </div>
+            <div class="form-group">
+              <a>Appointment End Time</a>
+              {% render_field appointmentForm.end_time class="form-control"  type="time" placeholder="Appointment End Time" %}
+            </div>
 
 
           </div>
 
         </div>
-        <button type="submit" class="btnSubmit">Book</button>
+        <button type="submit" class="btnSubmit"  style="background: #106e3e">Book</button>
       </div>
     </div>
   </div>

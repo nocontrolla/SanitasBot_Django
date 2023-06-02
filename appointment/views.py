@@ -22,7 +22,7 @@ def doctor_appointment_view(request):
 @user_passes_test(views.is_patient)
 def patient_view_appointment_view(request):
     patient=models.Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
-    appointments=models.Appointment.objects.all().filter(patientId=request.user.id)
+    appointments=models.Appointment.objects.all().filter(patient_id=request.user.id)
     return render(request,'appointment/patient_view_appointment.html',{'appointments':appointments,'patient':patient})
 
 

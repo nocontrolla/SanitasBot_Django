@@ -534,7 +534,6 @@ def patient_dashboard_view(request):
     'doctorName':doctor.get_name,
     'doctorMobile':doctor.mobile,
     'doctorAddress':doctor.address,
-    'symptoms':patient.symptoms,
     'doctorDepartment':doctor.department,
     'admitDate':patient.admitDate,
     }
@@ -589,8 +588,8 @@ def contactus_view(request):
 @login_required(login_url='patientlogin')
 @user_passes_test(is_patient)
 def patient_discharge_view(request):
-    patient=models.Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
-    dischargeDetails=models.PatientDischargeDetails.objects.all().filter(patientId=patient.id).order_by('-id')[:1]
+    patient=Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
+    dischargeDetails=PatientDischargeDetails.objects.all().filter(patientId=patient.id).order_by('-id')[:1]
     patientDict=None
     if dischargeDetails:
         patientDict ={

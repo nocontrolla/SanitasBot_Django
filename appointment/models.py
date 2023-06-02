@@ -14,7 +14,7 @@ class Appointment(models.Model):
     
 
     def __str__(self):
-        return "Patient - {} Doc- {} At {} {}".format(self.patient, self.doctor, self.date, self.time)
+        return "Patient - {} Doc- {} At {} from {} to {}".format(self.patient, self.doctor, self.date, self.start_time, self.end_time)
 
 
 class Feedback(models.Model):
