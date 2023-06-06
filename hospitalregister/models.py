@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
-
+from django.contrib.auth.models import User, AbstractUser
 
 
 departments=[('Cardiologist','Cardiologist'),
@@ -10,42 +9,53 @@ departments=[('Cardiologist','Cardiologist'),
 ('Anesthesiologists','Anesthesiologists'),
 ('Colon and Rectal Surgeons','Colon and Rectal Surgeons')
 ]
+
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+    is_email_verified = models.BooleanField(default=False)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    def __str__(self):
+        return self.email
+
+
 class Doctor(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
-    profile_pic= models.ImageField(upload_to='profile_pic/DoctorProfilePic/',null=True,blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(upload_to='profile_pic/DoctorProfilePic/', null=True, blank=True)
     address = models.CharField(max_length=40)
-    mobile = models.CharField(max_length=20,null=True)
-    department= models.CharField(max_length=50,choices=departments,default='Cardiologist')
-    status=models.BooleanField(default=False)
+    mobile = models.CharField(max_length=20, null=True)
+    department = models.CharField(max_length=50, choices=departments, default='Cardiologist')
+    status = models.BooleanField(default=False)
+
     @property
     def get_name(self):
-        return self.user.first_name+" "+self.user.last_name
-    @property
-    def get_id(self):
-        return self.user.id
-    def __str__(self):
-        return "{} ({})".format(self.user.first_name,self.department)
+        return self.user.get_full_name()
 
+    def __str__(self):
+        return "{} ({})".format(self.get_name(), self.department)
 
 
 class Patient(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
-    profile_pic= models.ImageField(upload_to='profile_pic/PatientProfilePic/',null=True,blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(upload_to='profile_pic/PatientProfilePic/', null=True, blank=True)
     address = models.CharField(max_length=40)
-    mobile = models.CharField(max_length=20,null=False)
+    mobile = models.CharField(max_length=20, null=False)
     emergencyContactName = models.CharField(max_length=30)
     emergencyContactPhone = models.CharField(max_length=15)
-    assignedDoctorId = models.PositiveIntegerField(null=True)
-    admitDate=models.DateField(auto_now=True)
-    status=models.BooleanField(default=False)
+    assignedDoctor = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True)
+    admitDate = models.DateField(auto_now=True)
+    status = models.BooleanField(default=False)
+
     @property
     def get_name(self):
-        return self.user.first_name+" "+self.user.last_name
-    @property
-    def get_id(self):
-        return self.user.id
+        return self.user.get_full_name()
+
     def __str__(self):
-        return self.user.first_name+" ("+self.symptoms+")"
+        return "{}".format(self.get_name())
+
+
 
 class PatientDischargeDetails(models.Model):
     patientId=models.PositiveIntegerField(null=True)
