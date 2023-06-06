@@ -98,6 +98,10 @@ DATABASES = {
 #         'PASSWORD': 'MyPassword'
 #     }
 # }
+# AUTHENTICATION_BACKENDS = [
+#     'hospitalregister.backends.EmailOrUsernameModelBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
 
 
 # Password validation
