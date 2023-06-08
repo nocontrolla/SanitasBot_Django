@@ -20,7 +20,9 @@ urlpatterns = [
     path('doctorlogin', LoginView.as_view(template_name='hospital/doctorlogin.html')),
     path('patientlogin', LoginView.as_view(template_name='hospital/patientlogin.html')),
 
-    path('afterlogin', views.afterlogin_view,name='afterlogin'),
+    path('admin_afterlogin', views.admin_afterlogin_view,name='admin_afterlogin'),
+    path('doctor_afterlogin', views.doctor_afterlogin_view,name='doctor_afterlogin'),
+    path('patient_afterlogin', views.patient_afterlogin_view,name='patient_afterlogin'),
     path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
 
 
@@ -36,6 +38,7 @@ urlpatterns = [
     path('reject-doctor/<int:pk>', views.reject_doctor_view,name='reject-doctor'),
     path('admin-view-doctor-specialisation',views.admin_view_doctor_specialisation_view,name='admin-view-doctor-specialisation'),
 
+    
 
     path('admin-patient', views.admin_patient_view,name='admin-patient'),
     path('admin-view-patient', views.admin_view_patient_view,name='admin-view-patient'),
