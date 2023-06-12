@@ -23,7 +23,7 @@ class Doctor(models.Model):
         return self.user.get_full_name()
 
     def __str__(self):
-        return "{} ({})".format(self.get_name(), self.department)
+        return "{} ({})".format(self.user.get_full_name(),self.department)
 
 
 class Patient(models.Model):

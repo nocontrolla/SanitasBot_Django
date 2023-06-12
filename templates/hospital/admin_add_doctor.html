@@ -11,7 +11,7 @@
     .note {
       text-align: center;
       height: 80px;
-      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+      background: -webkit-linear-gradient(left, #106e3e, #1cbb6c);
       color: #fff;
       font-weight: bold;
       line-height: 80px;
@@ -33,7 +33,7 @@
       padding: 1%;
       width: 20%;
       cursor: pointer;
-      background: #0062cc;
+      background: #106e3e;
       color: #fff;
     }
 
@@ -66,13 +66,16 @@
               {% render_field userForm.username class="form-control" placeholder="Username" %}
             </div>
             <div class="form-group">
+              {% render_field userForm.email class="form-control" placeholder="Valid Email Address" %}
+            </div>
+            <div class="form-group">
               {% render_field doctorForm.department class="form-control" placeholder="Department" %}
             </div>
             <div class="form-group">
               {% render_field doctorForm.address class="form-control" placeholder="Address" %}
             </div>
             <div class="form-group">
-              {% render_field doctorForm.email class="form-control" placeholder="Email" %}
+              {% render_field doctorForm.email class="form-control" placeholder="Valid Email Address" %}
             </div>
 
           </div>
@@ -84,11 +87,34 @@
               {% render_field userForm.password class="form-control" placeholder="Password" %}
             </div>
             <div class="form-group">
+              {% render_field userForm.confirm_password class="form-control" placeholder="Confirm Password" %}
+              <span id="password-error" class="text-danger"></span>
+            </div>
+            <div class="form-group">
               {% render_field doctorForm.mobile class="form-control"  placeholder="Mobile" %}
             </div>
             <div class="form-group">
               {% render_field doctorForm.profile_pic required="required" class="form-control" placeholder="Profile Picture" %}
             </div>
+
+            <script>
+              const passwordInput = document.querySelector('#id_password');
+              const confirmInput = document.querySelector('#id_confirm_password');
+              const errorSpan = document.querySelector('#password-error');
+            
+              confirmInput.addEventListener('input', () => {
+                const password = passwordInput.value;
+                const confirm = confirmInput.value;
+            
+                if (confirm !== password) {
+                  errorSpan.textContent = 'Passwords do not match.';
+                } else {
+                  errorSpan.textContent = '';
+                }
+              });
+            </script>
+
+
           </div>
         </div>
         <button type="submit" class="btnSubmit">Register</button>
