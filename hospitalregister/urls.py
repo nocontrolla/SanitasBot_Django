@@ -4,6 +4,8 @@ from django.contrib.auth.views import LoginView,LogoutView
 
 
 urlpatterns = [
+
+    path('',views.home_view,name=''),
     path('about_us', views.aboutus_view),
     path('contact_us', views.contactus_view),
 
@@ -20,13 +22,11 @@ urlpatterns = [
     path('doctorlogin', LoginView.as_view(template_name='hospital/doctorlogin.html')),
     path('patientlogin', LoginView.as_view(template_name='hospital/patientlogin.html')),
 
-    path('admin_afterlogin', views.admin_afterlogin_view,name='admin_afterlogin'),
-    path('doctor_afterlogin', views.doctor_afterlogin_view,name='doctor_afterlogin'),
-    path('patient_afterlogin', views.patient_afterlogin_view,name='patient_afterlogin'),
+    path('afterlogin', views.afterlogin_view,name='afterlogin'),
     path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
 
 
-    path('admin-dashboard', views.admin_dashboard_view,name='admin-dashboard'),
+    path('admin-dashboard', views.admin_dashboard_view),
 
     path('admin-doctor', views.admin_doctor_view,name='admin-doctor'),
     path('admin-view-doctor', views.admin_view_doctor_view,name='admin-view-doctor'),

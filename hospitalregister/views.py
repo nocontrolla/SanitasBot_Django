@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,reverse
 from . import forms, models
 from django.db.models import Sum
 from django.contrib.auth.models import Group
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.auth import models
@@ -12,94 +12,134 @@ from django.conf import settings
 from django.db.models import Q
 from appointment.models import Appointment
 from hospitalregister.models import Doctor, Patient, PatientDischargeDetails
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 # Create your views here.
 
-User = get_user_model()
+# User = get_user_model()
 
 def home_view(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/hospital/patient_afterlogin')
+        return HttpResponseRedirect('/hospital/afterlogin')
     return render(request,'hospital/index.html')
 
 
 #for showing signup/login button for admin(by bgame)
 def adminclick_view(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/hospital/admin_afterlogin/')
+        return HttpResponseRedirect('/hospital/afterlogin')
     return render(request,'hospital/adminclick.html')
 
 
 #for showing signup/login button for doctor(by bgame)
 def doctorclick_view(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/hospital/doctor_afterlogin/')
+        return HttpResponseRedirect('/hospital/afterlogin')
     return render(request,'hospital/doctorclick.html')
 
 
 #for showing signup/login button for patient(by bgame)
 def patientclick_view(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/hospital/patient_afterlogin/')
+        return HttpResponseRedirect('/hospital/afterlogin')
     return render(request,'hospital/patientclick.html')
 
 
+# def admin_signup_view(request):
+#     form = forms.AdminSignupForm()
+#     if request.method == 'POST':
+#         form = forms.AdminSignupForm(request.POST)
+#         if form.is_valid():
+#             username = form.cleaned_data['username']
+#             # email = form.cleaned_data['email']
+
+#             # Check if username or email already exists in the database
+#             if models.User.objects.filter(username=username).exists():
+#                 form.add_error('username', 'Username already exists')
+#             # elif User.objects.filter(email=email).exists():
+#             #     form.add_error('email', 'Email already exists')
+#             else:
+#                 user = form.save(commit=False)
+#                 user.set_password(user.password)
+#                 user.save()
+#                 my_admin_group, _ = Group.objects.get_or_create(name='ADMIN')
+#                 my_admin_group[0].user_set.add(user)
+#             return HttpResponseRedirect('/hospital/adminlogin')
+
+#     return render(request, 'hospital/adminsignup.html', {'form': form})
 def admin_signup_view(request):
-    form = forms.AdminSignupForm()
-    if request.method == 'POST':
-        form = forms.AdminSignupForm(request.POST)
+    form=forms.AdminSignupForm()
+    if request.method=='POST':
+        form=forms.AdminSignupForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-
-            # Check if username or email already exists in the database
-            if User.objects.filter(username=username).exists():
-                form.add_error('username', 'Username already exists')
-            elif User.objects.filter(email=email).exists():
-                form.add_error('email', 'Email already exists')
-            else:
-                user = form.save(commit=False)
-                user.set_password(user.password)
-                user.save()
-                my_admin_group, _ = Group.objects.get_or_create(name='ADMIN')
-                my_admin_group[0].user_set.add(user)
+            user=form.save()
+            user.set_password(user.password)
+            user.save()
+            my_admin_group = Group.objects.get_or_create(name='ADMIN')
+            my_admin_group[0].user_set.add(user)
             return HttpResponseRedirect('/hospital/adminlogin')
-
-    return render(request, 'hospital/adminsignup.html', {'form': form})
-
+    return render(request,'hospital/adminsignup.html',{'form':form})
 
 
-def doctor_signup_view(request):
-    userForm = forms.DoctorUserForm()
-    doctorForm = forms.DoctorForm()
-    mydict = {'userForm': userForm, 'doctorForm': doctorForm}
+
+
+# def doctor_signup_view(request):
+#     userForm = forms.DoctorUserForm()
+#     doctorForm = forms.DoctorForm()
+#     mydict = {'userForm': userForm, 'doctorForm': doctorForm}
     
-    if request.method == 'POST':
-        userForm = forms.DoctorUserForm(request.POST)
-        doctorForm = forms.DoctorForm(request.POST, request.FILES)
+#     if request.method == 'POST':
+#         userForm = forms.DoctorUserForm(request.POST)
+#         doctorForm = forms.DoctorForm(request.POST, request.FILES)
         
-        if userForm.is_valid() and doctorForm.is_valid():
-            username = userForm.cleaned_data['username']
-            email = userForm.cleaned_data['email']
+#         if userForm.is_valid() and doctorForm.is_valid():
+#             username = userForm.cleaned_data['username']
+#             email = userForm.cleaned_data['email']
 
-            # Check if username or email already exists in the database
-            if User.objects.filter(username=username).exists():
-                userForm.add_error('username', 'Username already exists')
-            elif User.objects.filter(email=email).exists():
-                userForm.add_error('email', 'Email already exists')
-            else:
-                user = userForm.save()
+#             # Check if username or email already exists in the database
+#             if User.objects.filter(username=username).exists():
+#                 userForm.add_error('username', 'Username already exists')
+#             elif User.objects.filter(email=email).exists():
+#                 userForm.add_error('email', 'Email already exists')
+#             else:
+#                 user = userForm.save()
+#                 user.set_password(user.password)
+#                 user.save()
+#                 doctor = doctorForm.save(commit=False)
+#                 doctor.user = user
+#                 doctor.save()
+#                 my_doctor_group, _ = Group.objects.get_or_create(name='DOCTOR')
+#                 my_doctor_group[0].user_set.add(user)
+#         return HttpResponseRedirect('/hospital/doctorlogin')
+    
+#     return render(request, 'hospital/doctorsignup.html', context=mydict)
+def doctor_signup_view(request):
+    userForm=forms.DoctorUserForm()
+    doctorForm=forms.DoctorForm()
+    mydict={'userForm':userForm,'doctorForm':doctorForm}
+    if request.method=='POST':
+        userForm=forms.DoctorUserForm(request.POST)
+        doctorForm=forms.DoctorForm(request.POST,request.FILES)
+
+        if userForm.is_valid() and doctorForm.is_valid():
+            
+            password = userForm.cleaned_data['password']
+            confirm_password = userForm.cleaned_data['confirm_password']
+
+            if password == confirm_password:
+                user=userForm.save()
                 user.set_password(user.password)
                 user.save()
-                doctor = doctorForm.save(commit=False)
-                doctor.user = user
-                doctor.save()
-                my_doctor_group, _ = Group.objects.get_or_create(name='DOCTOR')
-                my_doctor_group[0].user_set.add(user)
-        return HttpResponseRedirect('/hospital/doctorlogin')
-    
-    return render(request, 'hospital/doctorsignup.html', context=mydict)
 
+                doctor=doctorForm.save(commit=False)
+                doctor.user=user
+                doctor=doctor.save()
+                
+                my_doctor_group = Group.objects.get_or_create(name='DOCTOR')
+                my_doctor_group[0].user_set.add(user)
+            else:
+                messages.error(request, 'Passwords do not match.')                
+        return HttpResponseRedirect('/hospital/doctorlogin')
+    return render(request,'hospital/doctorsignup.html',context=mydict)
 
 
 def patient_signup_view(request):
@@ -109,16 +149,23 @@ def patient_signup_view(request):
     if request.method=='POST':
         userForm=forms.PatientUserForm(request.POST)
         patientForm=forms.PatientForm(request.POST,request.FILES)
+
         if userForm.is_valid() and patientForm.is_valid():
-            user=userForm.save()
-            user.set_password(user.password)
-            user.save()
-            patient=patientForm.save(commit=False)
-            patient.user=user
-            patient.assignedDoctorId=request.POST.get('assignedDoctorId')
-            patient=patient.save()
-            my_patient_group = Group.objects.get_or_create(name='PATIENT')
-            my_patient_group[0].user_set.add(user)
+            password = userForm.cleaned_data['password']
+            confirm_password = userForm.cleaned_data['confirm_password']
+
+            if password == confirm_password:
+                user=userForm.save()
+                user.set_password(user.password)
+                user.save()
+                patient=patientForm.save(commit=False)
+                patient.user=user
+                patient.assignedDoctorId=request.POST.get('assignedDoctorId')
+                patient=patient.save()
+                my_patient_group = Group.objects.get_or_create(name='PATIENT')
+                my_patient_group[0].user_set.add(user)
+            else:
+                messages.error(request, 'Passwords do not match.')
         return HttpResponseRedirect('/hospital/patientlogin')
     return render(request, 'hospital/patientsignup.html',context=mydict)
 
@@ -133,35 +180,27 @@ def is_patient(user):
 
 
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF ADMIN,DOCTOR OR PATIENT
-def admin_afterlogin_view(request):
+    
+def afterlogin_view(request):
     if is_admin(request.user):
         return redirect('/hospital/admin-dashboard')
-    else:
-        messages.success(request, "Wrong Username or Wrong Password.")
-        return redirect('/hospital/adminlogin')
     
-def doctor_afterlogin_view(request):    
-    if is_doctor(request.user):
+    elif is_doctor(request.user):
         accountapproval=Doctor.objects.all().filter(user_id=request.user.id,status=True)
         if accountapproval:
             return redirect('/hospital/doctor-dashboard')
         else:
             return render(request,'hospital/doctor_wait_for_approval.html')
-    else:
-        messages.success(request, "Wrong Username or Wrong Password.")
-        return redirect('/hospital/doctorlogin')
-    
-    
-def patient_afterlogin_view(request):
-    if is_patient(request.user):
+        
+    elif is_patient(request.user):
         accountapproval=Patient.objects.all().filter(user_id=request.user.id,status=True)
         if accountapproval:
             return redirect('/hospital/patient-dashboard')
         else:
-            return render(request,'hospital/patient_wait_for_approval.html')    
-    else:
-        messages.success(request, "Wrong Username or Wrong Password.")
-        return redirect('/hospital/patientlogin')
+            return render(request,'hospital/patient_wait_for_approval.html')
+        
+
+    # return redirect('/hospital/admin-dashboard')
 
 
 #---------------------------------------------------------------------------------
@@ -505,7 +544,7 @@ def doctor_view_discharge_patient_view(request):
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
 def admin_discharge_patient_view(request):
-    patients=models.Patient.objects.all().filter(status=True)
+    patients=Patient.objects.all().filter(status=True)
     return render(request,'hospital/admin_discharge_patient.html',{'patients':patients})
 
 
@@ -513,7 +552,7 @@ def admin_discharge_patient_view(request):
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
 def discharge_patient_view(request,pk):
-    patient=models.Patient.objects.get(id=pk)
+    patient=Patient.objects.get(id=pk)
     days=(date.today()-patient.admitDate) #2 days, 0:00:00
     assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctorId)
     d=days.days # only how many day that is 2
@@ -538,7 +577,7 @@ def discharge_patient_view(request,pk):
         }
         patientDict.update(feeDict)
         #for updating to database patientDischargeDetails (pDD)
-        pDD=models.PatientDischargeDetails()
+        pDD=PatientDischargeDetails()
         pDD.patientId=pk
         pDD.patientName=patient.get_name
         pDD.assignedDoctorName=assignedDoctor[0].first_name
