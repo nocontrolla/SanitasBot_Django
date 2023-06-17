@@ -58,12 +58,14 @@
                 subtitle : "A healthcare Chatbot for health information",
                 showCloseButton: true,
                 // add other props here
+                storage: "session",
               },
               null
             );
           }),
           t.insertBefore(e, t.firstChild);
       })();
+      localStorage.clear();
       </script>
   </body>
 </html>

@@ -160,7 +160,7 @@ def patient_signup_view(request):
                 user.save()
                 patient=patientForm.save(commit=False)
                 patient.user=user
-                patient.assignedDoctorId=request.POST.get('assignedDoctorId')
+                patient.assignedDoctor=request.POST.get('assignedDoctorId')
                 patient=patient.save()
                 my_patient_group = Group.objects.get_or_create(name='PATIENT')
                 my_patient_group[0].user_set.add(user)
@@ -469,7 +469,7 @@ def reject_patient_view(request,pk):
 @user_passes_test(is_doctor)
 def doctor_dashboard_view(request):
     #for three cards
-    patientcount=Patient.objects.all().filter(status=True,assignedDoctorId=request.user.id).count()
+    patientcount=Patient.objects.all().filter(status=True,assignedDoctor_id=request.user.id).count()
     appointmentcount=Appointment.objects.all().filter(status=True,doctor_id=request.user.id).count()
     patientdischarged=PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
 
@@ -506,7 +506,7 @@ def doctor_patient_view(request):
 @login_required(login_url='hospital/doctorlogin')
 @user_passes_test(is_doctor)
 def doctor_view_patient_view(request):
-    patients=Patient.objects.all().filter(status=True,assignedDoctorId=request.user.id)
+    patients=Patient.objects.all().filter(status=True,assignedDoctor_id=request.user.id)
     doctor=Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
     return render(request,'hospital/doctor_view_patient.html',{'patients':patients,'doctor':doctor})
 
@@ -605,7 +605,7 @@ def discharge_patient_view(request,pk):
 @user_passes_test(is_patient)
 def patient_dashboard_view(request):
     patient=Patient.objects.get(user_id=request.user.id)
-    doctor=Doctor.objects.get(user_id=patient.assignedDoctorId)
+    doctor=Doctor.objects.get(user_id=patient.assignedDoctor)
     mydict={
     'patient':patient,
     'doctorName':doctor.get_name,

@@ -9,7 +9,7 @@ class AppointmentForm(forms.ModelForm):
     patientId=forms.ModelChoiceField(queryset=models.Patient.objects.all().filter(status=True),empty_label="Patient Name and Symptoms", to_field_name="user_id")
     class Meta:
         model= Appointment
-        fields=['start_time','end_time','description','status']
+        fields=['date','start_time','end_time','description','status']
 
 
 class PatientAppointmentForm(forms.ModelForm):
