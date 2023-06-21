@@ -31,3 +31,12 @@ def delete_prescription(request, prescription_id):
         prescription.delete()
     return redirect('prescription_list')
 
+def doctor_view_prescription(request):
+
+
+    return request
+
+def list_medicines(request):
+
+
+    return request

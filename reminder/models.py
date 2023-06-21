@@ -44,7 +44,7 @@ class Prescription(models.Model):
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE ,max_length=255, default=None)
     dosage = models.CharField(max_length=255, default='1 X 3')
     frequency = models.CharField(max_length=255, blank=True)
-    start_date = models.DateField(blank=True)
+    start_date = models.DateField(auto_created=True)
     end_date = models.DateField(null=True)
     additional_info = models.TextField(blank=True, null=True)
 

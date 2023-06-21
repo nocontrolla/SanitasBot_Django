@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User, AbstractUser
 
@@ -33,7 +34,6 @@ class Patient(models.Model):
     mobile = models.CharField(max_length=20, null=False)
     emergencyContactName = models.CharField(max_length=30)
     emergencyContactPhone = models.CharField(max_length=15)
-    assignedDoctor = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True)
     admitDate = models.DateField(auto_now=True)
     status = models.BooleanField(default=False)
 
@@ -42,7 +42,8 @@ class Patient(models.Model):
         return self.user.get_full_name()
 
     def __str__(self):
-        return "{}".format(self.get_name())
+        return "{}".format(self.user.get_full_name())
+
 
 
 
@@ -64,3 +65,9 @@ class PatientDischargeDetails(models.Model):
     OtherCharge=models.PositiveIntegerField(null=False)
     total=models.PositiveIntegerField(null=False)
 
+
+class DoctorPatient(models.Model):
+    patientId=models.ForeignKey(Patient, on_delete=models.CASCADE)
+    assignedDoctor=models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    admission_date=models.DateField(default=timezone.now)
+    end_admission=models.DateField(default=timezone.now)

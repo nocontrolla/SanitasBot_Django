@@ -11,7 +11,7 @@ from datetime import datetime,timedelta,date
 from django.conf import settings
 from django.db.models import Q
 from appointment.models import Appointment
-from hospitalregister.models import Doctor, Patient, PatientDischargeDetails
+from hospitalregister.models import Doctor, DoctorPatient, Patient, PatientDischargeDetails, User
 # from django.contrib.auth import get_user_model
 # Create your views here.
 
@@ -160,7 +160,7 @@ def patient_signup_view(request):
                 user.save()
                 patient=patientForm.save(commit=False)
                 patient.user=user
-                patient.assignedDoctor=request.POST.get('assignedDoctorId')
+                # patient.assignedDoctor=request.POST.get('assignedDoctorId')
                 patient=patient.save()
                 my_patient_group = Group.objects.get_or_create(name='PATIENT')
                 my_patient_group[0].user_set.add(user)
@@ -394,7 +394,7 @@ def update_patient_view(request,pk):
             user.save()
             patient=patientForm.save(commit=False)
             patient.status=True
-            patient.assignedDoctorId=request.POST.get('assignedDoctorId')
+            # patient.assignedDoctorId=request.POST.get('assignedDoctorId')
             patient.save()
             return redirect('admin-view-patient')
     return render(request,'hospital/admin_update_patient.html',context=mydict)
@@ -420,7 +420,6 @@ def admin_add_patient_view(request):
             patient=patientForm.save(commit=False)
             patient.user=user
             patient.status=True
-            patient.assignedDoctorId=request.POST.get('assignedDoctorId')
             patient.save()
 
             my_patient_group = Group.objects.get_or_create(name='PATIENT')
@@ -605,14 +604,15 @@ def discharge_patient_view(request,pk):
 @user_passes_test(is_patient)
 def patient_dashboard_view(request):
     patient=Patient.objects.get(user_id=request.user.id)
-    doctor=Doctor.objects.get(user_id=patient.assignedDoctor)
+    patient_intermediate=DoctorPatient.objects.get(patientId_id=patient.id)
+    doctor=Doctor.objects.get(id=patient_intermediate.assignedDoctor_id)
     mydict={
     'patient':patient,
     'doctorName':doctor.get_name,
     'doctorMobile':doctor.mobile,
     'doctorAddress':doctor.address,
     'doctorDepartment':doctor.department,
-    'admitDate':patient.admitDate,
+    # 'admitDate':patient.admission_date,
     }
     return render(request,'hospital/patient_dashboard.html',context=mydict)
 
