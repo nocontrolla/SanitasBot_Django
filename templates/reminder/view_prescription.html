@@ -76,40 +76,20 @@
   </style>
 </head>
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container">
-  <div class="row">
-    <div class="col-md-4 col-xl-6">
-      <div class="card bg-c-blue order-card">
-        <div class="card-block">
-          <a href="/reminder/list-medicines">
-            <h6 class="m-b-20">View Medicines</h6>
-          </a>
-          <br>
-          <h2 class="text-right"><i class="fas fa-user-injured f-left"></i></h2>
-
-        </div>
-      </div>
-    </div>
-
-
-    <div class="col-md-4 col-xl-6">
-      <div class="card bg-c-pink order-card">
-        <div class="card-block">
-          <a href="/reminder/view-prescription">
-            <h6 class="m-b-20">My Prescription</h6>
-          </a>
-          <br>
-          <h2 class="text-right"><i class="fas fa-eject f-left"></i></h2>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!--
-  developed By : Brian Godwin
-   
-  
-  -->
-<br><br><br><br><br><br><br>
-{% endblock content %}
+<body>
+    <h1>Prescription</h1>
+    <ul>
+        {% for prescription in prescriptions %}
+            <li>
+                <strong>Medicine:</strong> {{ prescription.medicine.medication_name }}<br>
+                <strong>Dosage:</strong> {{ prescription.dosage }}<br>
+                <strong>Frequency:</strong> {{ prescription.frequency }}<br>
+                <strong>Start Date:</strong> {{ prescription.start_date }}<br>
+                <strong>End Date:</strong> {{ prescription.end_date }}<br>
+                <strong>Additional Info:</strong> {{ prescription.additional_info }}
+            </li>
+        {% empty %}
+            <li>No prescriptions found.</li>
+        {% endfor %}
+    </ul>
+</body>

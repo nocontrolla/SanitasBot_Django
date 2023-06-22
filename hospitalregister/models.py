@@ -4,11 +4,11 @@ from django.contrib.auth.models import User, AbstractUser
 
 
 departments=[('Cardiologist','Cardiologist'),
-('Dermatologists','Dermatologists'),
-('Emergency Medicine Specialists','Emergency Medicine Specialists'),
-('Allergists/Immunologists','Allergists/Immunologists'),
-('Anesthesiologists','Anesthesiologists'),
-('Colon and Rectal Surgeons','Colon and Rectal Surgeons')
+             ('Dermatologists','Dermatologists'),
+             ('Emergency Medicine Specialists','Emergency Medicine Specialists'),
+             ('Allergists/Immunologists','Allergists/Immunologists'),
+             ('Anesthesiologists','Anesthesiologists'),
+             ('Colon and Rectal Surgeons','Colon and Rectal Surgeons')
 ]
 
 class Doctor(models.Model):
@@ -71,3 +71,13 @@ class DoctorPatient(models.Model):
     assignedDoctor=models.ForeignKey(Doctor, on_delete=models.CASCADE)
     admission_date=models.DateField(default=timezone.now)
     end_admission=models.DateField(default=timezone.now)
+
+    @property
+    def get_patient_name(self):
+        return self.patientId.user.get_full_name()
+    
+    def __str__(self):
+        return "{}".format(self.patientId.user.get_full_name())
+    
+
+    

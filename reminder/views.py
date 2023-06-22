@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 from .models import Prescription
 from .forms import PrescriptionForm
 from hospitalregister import models
+from . import models
 
 # Create your views here.
 def prescription_list(request):
@@ -10,6 +12,7 @@ def prescription_list(request):
 
 # In this example, the prescription_list view retrieves all the prescriptions from the database using Prescription.objects.all(). 
 # Then it renders the prescription_list.html template, passing the retrieved prescriptions as context data.
+
 
 def create_prescription(request):
     if request.method == 'POST':
@@ -34,9 +37,30 @@ def delete_prescription(request, prescription_id):
 def doctor_view_prescription(request):
 
 
-    return request
+    return render(request, 'reminder/doctor_prescription.html')
+
+
+def patient_view_prescription(request):
+    return render(request, 'reminder/patient_prescription.html')
+
+
 
 def list_medicines(request):
+    medicines = models.Medicine.objects.all()
+    return render(request, 'reminder/patient_list_medicine.html', {'medicines': medicines})
 
 
-    return request
+def view_prescription(request):
+    patient = request.user  # Assuming the authenticated user is the patient
+    prescriptions = Prescription.objects.filter(patient__patientId=patient)
+    return render(request, 'reminder/view_prescription.html', {'prescriptions': prescriptions})
+
+
+def search_medicine_view(request):
+    patient=models.Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
+    
+    # whatever user write in search box we get in query
+    query = request.GET['query']
+    medicines = models.Medicine.objects.all().filter(status=True).filter(Q(medication_name__icontains=query)| Q(medicine_info__icontains=query))
+    return render(request,'reminder/patient_list_medicine.html',{'patient':patient,'medicines':medicines})
+

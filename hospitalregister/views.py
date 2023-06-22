@@ -468,7 +468,7 @@ def reject_patient_view(request,pk):
 @user_passes_test(is_doctor)
 def doctor_dashboard_view(request):
     #for three cards
-    patientcount=Patient.objects.all().filter(status=True,assignedDoctor_id=request.user.id).count()
+    patientcount=DoctorPatient.objects.all().filter(assignedDoctor_id=request.user.id).count()
     appointmentcount=Appointment.objects.all().filter(status=True,doctor_id=request.user.id).count()
     patientdischarged=PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
 
