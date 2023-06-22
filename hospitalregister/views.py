@@ -612,7 +612,7 @@ def patient_dashboard_view(request):
     'doctorMobile':doctor.mobile,
     'doctorAddress':doctor.address,
     'doctorDepartment':doctor.department,
-    # 'admitDate':patient.admission_date,
+    'admitDate':patient_intermediate.admission_date,
     }
     return render(request,'hospital/patient_dashboard.html',context=mydict)
 
