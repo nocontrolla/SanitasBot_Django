@@ -51,8 +51,13 @@ def list_medicines(request):
 
 
 def view_prescription(request):
-    patient = request.user  # Assuming the authenticated user is the patient
-    prescriptions = Prescription.objects.filter(patient__patientId=patient)
+    # patient = request.user  # Assuming the authenticated user is the patient
+    this = request.user
+    patient = models.Patient.objects.get(user_id=this)
+    doctor_patient = models.DoctorPatient.objects.get(patientId_id = patient.id)
+
+    prescriptions = Prescription.objects.filter(patient_doctor=doctor_patient.id)
+
     return render(request, 'reminder/view_prescription.html', {'prescriptions': prescriptions})
 
 
