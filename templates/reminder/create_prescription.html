@@ -1,56 +1,121 @@
-{% comment %} {% extends 'hospital/doctor_base.html' %}
-{% load static %}
+{% extends 'hospital/doctor_base.html' %}
+{% load widget_tweaks %}
 {% block content %}
-<br><br> {% endcomment %}
+
+
+<head>
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      background: -webkit-linear-gradient(left, #106e3e, #1cbb6c);
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 1.5rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+
+    .menu {
+      top: 50px;
+    }
+  </style>
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<br><br>
+{% if message %}
+<script>
+  var a = "{{message}}";
+  alert(a);
+</script>
+
+{% endif %}
 
 
 
-<h1>Create Prescription</h1>
+  <h5>Create Prescription</h5>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Create</button>
-</form>
-{% comment %} 
+  <form method="post">
+    {% csrf_token %}
 
-<form method="post">
-  {% csrf_token %}
-  <div class="container register-form">
-    <div class="form">
-      <div class="note">
-        <p>Create Prescription</p>
-      </div>
-      <div class="form-content">
-        <div class="row">
-          <div class="col-md-12">
-            <a>Choose the prescription medicine for Patient</a>
-            <div class="form-group">
-              {% render_field form.medicine class="form-control" placeholder="Enter the Medicine" %}
+    <div class="container register-form">
+      <div class="form">
+        <div class="note">
+          <p>Add Prescription to Patient</p>
+        </div>
+        <div class="form-content">
+          <div class="row">
+            <div class="col-md-12">
+              
+              <a>Choose the Patient to prescribe medicine</a>
+              <div class="form-group">
+                {% render_field prescriptionform.patient_doctor class="form-control" placeholder="Select Patient" %}
+              </div>
+
+              <a>Choose the medicine to prescribe to said Patient</a>
+              <div class="form-group">
+                {% render_field prescriptionform.medicine class="form-control" placeholder="Medicine Name" %}
+              </div>
+
+              <div class="form-group">
+                <a>Explain the frequency of taking the Medicine</a>
+                {% render_field prescriptionform.frequency class="form-control" placeholder="Frequency" %}
+              </div>
+
+              <div class="form-group">
+                <a>Dosage of taking the Medicine</a>
+                {% render_field prescriptionform.dosage class="form-control" placeholder="Dosage" %}
+              </div>
+
+              <a>Medication Start Date</a>
+              <div class="form-group">
+                {% render_field prescriptionform.start_date class="form-control"  type="date" placeholder="Medication Starting date" %}
+              </div>
+
+              <a>Medication End Date</a>
+              <div class="form-group">
+                {% render_field prescriptionform.end_date class="form-control"  type="date" placeholder="Medication Ending date" %}
+              </div>
+
+
             </div>
-            <a>Choose the Doctor you want To See</a>
-            <div class="form-group">
-              {% render_field appointmentForm.doctorId class="form-control" placeholder="doctor" %}
-            </div>
-            <div class="form-group">
-              <a>Choose the Day You Want to Book with The Doctor</a>
-              {% render_field appointmentForm.date class="form-control" type="date" %}
-            </div>
-            <a>Appointment Start Time</a>
-            <div class="form-group">
-              {% render_field appointmentForm.start_time class="form-control"  type="time" placeholder="Appointment Start Time" %}
-            </div>
-            <div class="form-group">
-              <a>Appointment End Time</a>
-              {% render_field appointmentForm.end_time class="form-control"  type="time" placeholder="Appointment End Time" %}
-            </div>
-
 
           </div>
-
+          <button type="submit" class="btnSubmit"  style="background: #106e3e">Create Prescription</button>
         </div>
-        <button type="submit" class="btnSubmit"  style="background: #106e3e">Book</button>
       </div>
     </div>
-  </div>
-</form> {% endcomment %}
+
+
+
+
+  </form>
+
+  {% comment %} {{ form.as_p }}
+  <button type="submit">Create</button> {% endcomment %}
+{% endblock content %}

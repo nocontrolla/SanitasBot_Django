@@ -49,7 +49,7 @@ class Medicine(models.Model):
     medicine_info = models.TextField(null=True)
 
     def __str__(self):
-        return "Medication Name - {}".format(self.medication_name)
+        return "{}".format(self.medication_name)
 
 class Prescription(models.Model):
     patient_doctor = models.ForeignKey(DoctorPatient, on_delete=models.CASCADE)

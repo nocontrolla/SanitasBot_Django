@@ -1,93 +1,122 @@
 {% extends 'hospital/patient_base.html' %}
+{% block content %}
 {% load static %}
-{% comment %} {% block content %} {% endcomment %}
 
-<head>
-  <meta charset="utf-8">
-
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-
-  <style type="text/css">
-    a:link {
-      text-decoration: none;
-    }
-
-    .menu {
-      top: 50px;
-    }
-
-    h6 {
-      color: white;
-    }
-
-    .order-card {
-      color: #fff;
-    }
-
-    .bg-c-blue {
-      background: linear-gradient(45deg, #4099ff, #73b4ff);
-    }
-
-    .bg-c-green {
-      background: linear-gradient(45deg, #2ed8b6, #59e0c5);
-    }
-
-    .bg-c-yellow {
-      background: linear-gradient(45deg, #FFB64D, #ffcb80);
-    }
-
-    .bg-c-pink {
-      background: linear-gradient(45deg, #FF5370, #ff869a);
-    }
+  <head>
+    <meta charset="utf-8">
 
 
-    .card {
-      border-radius: 5px;
-      -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
-      box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
-      border: none;
-      margin-bottom: 30px;
-      -webkit-transition: all 0.3s ease-in-out;
-      transition: all 0.3s ease-in-out;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
 
-    .card .card-block {
-      padding: 25px;
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
 
-    .order-card i {
-      font-size: 26px;
-    }
+    <style type="text/css">
+      a:link {
+        text-decoration: none;
+      }
 
-    .f-left {
-      float: left;
-    }
+      .menu {
+        top: 50px;
+      }
 
-    .f-right {
-      float: right;
-    }
-  </style>
-</head>
+      h6 {
+        color: white;
+      }
 
-<body>
-    <h1>Prescription</h1>
-    <ul>
-        {% for prescription in prescriptions %}
-            <li>
-                <strong>Medicine:</strong> {{ prescription.medicine.medication_name }}<br>
-                <strong>Dosage:</strong> {{ prescription.dosage }}<br>
-                <strong>Frequency:</strong> {{ prescription.frequency }}<br>
-                <strong>Start Date:</strong> {{ prescription.start_date }}<br>
-                <strong>End Date:</strong> {{ prescription.end_date }}<br>
-                <strong>Additional Info:</strong> {{ prescription.additional_info }}
-            </li>
-        {% empty %}
-            <li>No prescriptions found.</li>
-        {% endfor %}
-    </ul>
-</body>
+      .order-card {
+        color: #fff;
+      }
+
+      .bg-c-blue {
+        background: linear-gradient(45deg, #4099ff, #73b4ff);
+      }
+
+      .bg-c-green {
+        background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+      }
+
+      .bg-c-yellow {
+        background: linear-gradient(45deg, #FFB64D, #ffcb80);
+      }
+
+      .bg-c-pink {
+        background: linear-gradient(45deg, #FF5370, #ff869a);
+      }
+
+
+      .card {
+        border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+        box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+        border: none;
+        margin-bottom: 30px;
+        -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .card .card-block {
+        padding: 25px;
+      }
+
+      .order-card i {
+        font-size: 26px;
+      }
+
+      .f-left {
+        float: left;
+      }
+
+      .f-right {
+        float: right;
+      }
+    </style>
+  </head>
+
+  <div class="container">
+    
+    {% if prescriptions %}
+    {% if medicines %}
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h6 class="panel-title"> Your Prescription List</h6>
+        </div>
+        <table class="table table-hover" id="dev-table">
+          <thead>
+            <tr>
+              <th>Medicine Name</th>
+              <th>Dosage</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Additional Info</th>
+            </tr>
+          </thead>
+            
+          {% for prescription in prescriptions %}
+            <tr>
+              <td>
+                {% for medicine in medicines %}
+                  {% if medicine.id == prescription.medicine_id %}
+                    {{ medicine.medication_name }}
+                  {% endif %}
+                {% endfor %}
+              </td>
+              <td>{{ prescription.dosage }}</td>
+              <td>{{ prescription.start_date }}</td>
+              <td>{{ prescription.end_date }}</td>
+              <td>{{ prescription.additional_info }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {%else%}
+      <br><br><br>
+      <h4 style="text-align: center;color: red;">No Prescriptions found !!!</h4>
+    {% endif %}
+    {% endif %}
+
+  </div>
+
+
+{% endblock content %}

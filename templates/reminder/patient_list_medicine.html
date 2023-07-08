@@ -2,7 +2,7 @@
 {% block content %}
 {%load static%}
 
-<head>
+  <head>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -34,24 +34,24 @@
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
    
-  
-    {% if medicine %}
+      <br><br>
+    {% if medicines %}
+
+    <div>
+      <h6 class="panel-title"><strong> Medication List </strong></h6>
+    </div>
+    
     <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h6 class="panel-title"> Medication List</h6>
-      </div>
+      
       <table class="table table-hover" id="dev-table">
           <thead>
             <tr>
-    
               <th>Medicine Name</th>
               <th>Medication Info</th>
-             
             </tr>
           </thead>
           {% for medicine in medicines %}
           <tr>
-    
             <td> {{ medicine.medication_name }}</td>
             <td>{{ medicine.medicine_info }}</td>
           </tr>
@@ -69,4 +69,4 @@
   developed By : Brian Godwin
   -->
   
-  {% endblock content %}
+{% endblock content %}
