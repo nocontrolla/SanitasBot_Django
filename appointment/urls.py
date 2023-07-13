@@ -13,6 +13,9 @@ urlpatterns = [
 
 
 
+    path("doctor-approve-appointment", views.doctor_approve_appointment_view),
+    path('docapprove-appointment/<int:pk>', views.docapprove_appointment_view,name='docapprove-appointment'),
+    path('docreject-appointment/<int:pk>', views.docreject_appointment_view,name='docreject-appointment'),
     path('doctor-appointment', views.doctor_appointment_view,name='doctor-appointment'),
     path('doctor-view-appointment', views.doctor_view_appointment_view,name='doctor-view-appointment'),
     path('doctor-delete-appointment',views.doctor_delete_appointment_view,name='doctor-delete-appointment'),

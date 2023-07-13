@@ -6,17 +6,17 @@ from django.contrib.auth.views import LoginView,LogoutView
 urlpatterns = [
 
     path('',views.home_view,name=''),
-    path('about_us', views.aboutus_view),
-    path('contact_us', views.contactus_view),
+    path('about_us', views.aboutus_view, name='about_us'),
+    path('contact_us', views.contactus_view, name='contact_us'),
 
-    path('adminclick', views.adminclick_view),
-    path('doctorclick', views.doctorclick_view),
-    path('patientclick', views.patientclick_view),
+    path('adminclick', views.adminclick_view, name='adminclick'),
+    path('doctorclick', views.doctorclick_view, name='doctorclick'),
+    path('patientclick', views.patientclick_view, name='patientclick'),
 
 #-----------------------ADMIN_RELATED_URLS----------------------------------------------#
-    path('adminsignup', views.admin_signup_view),
+    path('adminsignup', views.admin_signup_view, name='adminsignup'),
     path('doctorsignup', views.doctor_signup_view,name='doctorsignup'),
-    path('patientsignup', views.patient_signup_view),
+    path('patientsignup', views.patient_signup_view, name='patientsignup'),
 
     path('adminlogin', LoginView.as_view(template_name='hospital/adminlogin.html')),
     path('doctorlogin', LoginView.as_view(template_name='hospital/doctorlogin.html')),

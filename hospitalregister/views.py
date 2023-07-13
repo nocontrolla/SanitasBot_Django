@@ -15,7 +15,6 @@ from hospitalregister.models import Doctor, DoctorPatient, Patient, PatientDisch
 # from django.contrib.auth import get_user_model
 # Create your views here.
 
-# User = get_user_model()
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -44,28 +43,6 @@ def patientclick_view(request):
     return render(request,'hospital/patientclick.html')
 
 
-# def admin_signup_view(request):
-#     form = forms.AdminSignupForm()
-#     if request.method == 'POST':
-#         form = forms.AdminSignupForm(request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data['username']
-#             # email = form.cleaned_data['email']
-
-#             # Check if username or email already exists in the database
-#             if models.User.objects.filter(username=username).exists():
-#                 form.add_error('username', 'Username already exists')
-#             # elif User.objects.filter(email=email).exists():
-#             #     form.add_error('email', 'Email already exists')
-#             else:
-#                 user = form.save(commit=False)
-#                 user.set_password(user.password)
-#                 user.save()
-#                 my_admin_group, _ = Group.objects.get_or_create(name='ADMIN')
-#                 my_admin_group[0].user_set.add(user)
-#             return HttpResponseRedirect('/hospital/adminlogin')
-
-#     return render(request, 'hospital/adminsignup.html', {'form': form})
 def admin_signup_view(request):
     form=forms.AdminSignupForm()
     if request.method=='POST':
@@ -80,38 +57,6 @@ def admin_signup_view(request):
     return render(request,'hospital/adminsignup.html',{'form':form})
 
 
-
-
-# def doctor_signup_view(request):
-#     userForm = forms.DoctorUserForm()
-#     doctorForm = forms.DoctorForm()
-#     mydict = {'userForm': userForm, 'doctorForm': doctorForm}
-    
-#     if request.method == 'POST':
-#         userForm = forms.DoctorUserForm(request.POST)
-#         doctorForm = forms.DoctorForm(request.POST, request.FILES)
-        
-#         if userForm.is_valid() and doctorForm.is_valid():
-#             username = userForm.cleaned_data['username']
-#             email = userForm.cleaned_data['email']
-
-#             # Check if username or email already exists in the database
-#             if User.objects.filter(username=username).exists():
-#                 userForm.add_error('username', 'Username already exists')
-#             elif User.objects.filter(email=email).exists():
-#                 userForm.add_error('email', 'Email already exists')
-#             else:
-#                 user = userForm.save()
-#                 user.set_password(user.password)
-#                 user.save()
-#                 doctor = doctorForm.save(commit=False)
-#                 doctor.user = user
-#                 doctor.save()
-#                 my_doctor_group, _ = Group.objects.get_or_create(name='DOCTOR')
-#                 my_doctor_group[0].user_set.add(user)
-#         return HttpResponseRedirect('/hospital/doctorlogin')
-    
-#     return render(request, 'hospital/doctorsignup.html', context=mydict)
 def doctor_signup_view(request):
     userForm=forms.DoctorUserForm()
     doctorForm=forms.DoctorForm()
@@ -197,10 +142,8 @@ def afterlogin_view(request):
             return redirect('/hospital/patient-dashboard')
         else:
             return render(request,'hospital/patient_wait_for_approval.html')
-        
 
-    # return redirect('/hospital/admin-dashboard')
-
+    # return redirect('')
 
 #---------------------------------------------------------------------------------
 #------------------------ ADMIN RELATED VIEWS START ------------------------------
@@ -475,7 +418,7 @@ def doctor_dashboard_view(request):
     appointments=Appointment.objects.all().filter(status=True,doctor_id=request.user.id).order_by('-id')
     patientid=[]
     for a in appointments:
-        patientid.append(a.patientId)
+        patientid.append(a.patient)
     patients=Patient.objects.all().filter(status=True,user_id__in=patientid).order_by('-id')
     appointments=zip(appointments,patients)
     mydict={
@@ -504,9 +447,11 @@ def doctor_patient_view(request):
 @login_required(login_url='hospital/doctorlogin')
 @user_passes_test(is_doctor)
 def doctor_view_patient_view(request):
-    patients=Patient.objects.all().filter(status=True,assignedDoctor_id=request.user.id)
     doctor=Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
-    return render(request,'hospital/doctor_view_patient.html',{'patients':patients,'doctor':doctor})
+    doctorpatient = DoctorPatient.objects.all().filter(assignedDoctor_id=doctor.id)
+    patients=Patient.objects.all()
+    
+    return render(request,'hospital/doctor_view_patient.html',{'patients':patients,'doctor':doctor, 'doctorpatient':doctorpatient})
 
 
 @login_required(login_url='hospital/doctorlogin')
@@ -515,6 +460,14 @@ def search_view(request):
     doctor=Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
     # whatever user write in search box we get in query
     query = request.GET['query']
+    doctorpatient = DoctorPatient.objects.all().filter(assignedDoctor_id=doctor.id)
+    # allpatients = Patient.objects.all()
+    # for p in allpatients:
+    #     for dp in doctorpatient:
+    #         if dp.patientId == p.id :
+    #             patients=p.all().filter(Q(user__first_name__icontains=query))
+                
+    
     patients=Patient.objects.all().filter(status=True,assignedDoctorId=request.user.id).filter(Q(symptoms__icontains=query)|Q(user__first_name__icontains=query))
     return render(request,'hospital/doctor_view_patient.html',{'patients':patients,'doctor':doctor})
 
@@ -552,7 +505,7 @@ def admin_discharge_patient_view(request):
 def discharge_patient_view(request,pk):
     patient=Patient.objects.get(id=pk)
     days=(date.today()-patient.admitDate) #2 days, 0:00:00
-    assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctorId)
+    assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctor)
     d=days.days # only how many day that is 2
     patientDict={
         'patientId':pk,
