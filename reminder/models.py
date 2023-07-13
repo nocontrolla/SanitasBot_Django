@@ -14,7 +14,7 @@ dosages=[('1 X 1','1 X 1'),
 # Create your models here.
 
 class Symptom(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=25)
     description = models.TextField()
 
 
@@ -23,7 +23,7 @@ class Symptom(models.Model):
     
 
 class Disease(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=25)
     description = models.TextField()
 
     def __str__(self):
