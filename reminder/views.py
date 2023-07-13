@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import Prescription
-from .forms import PrescriptionForm
+from .forms import PrescriptionForm, MedicineForm
 from hospitalregister.models import Doctor
 from . import models
 
@@ -13,7 +13,28 @@ def prescription_list(request):
 
 # In this example, the prescription_list view retrieves all the prescriptions from the database using Prescription.objects.all(). 
 # Then it renders the prescription_list.html template, passing the retrieved prescriptions as context data.
+@login_required(login_url='hospital/adminlogin')
+def admin_prescription(request):
+    return render(request, 'reminder/admin_prescription.html')
 
+
+@login_required(login_url='hospital/adminlogin')
+def admin_add_medicine(request):
+    medicineform = MedicineForm()
+    
+    mydict={'medicineform':medicineform,}
+    if request.method == 'POST':
+        medicineform = MedicineForm(request.POST)
+        if medicineform.is_valid():
+            medicineform.save()
+            return redirect('admin-prescription')
+    else:
+        form = MedicineForm()
+        
+    return render(request, 'reminder/add_new_medicine.html', context=mydict, )
+
+
+# @login_required(login_url='hospital/adminlogin')
 @login_required(login_url='hospital/doctorlogin')
 def create_prescription(request):
     prescriptionform = PrescriptionForm()

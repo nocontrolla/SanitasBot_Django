@@ -5,18 +5,18 @@ from hospitalregister import models
 
 
 class AppointmentForm(forms.ModelForm):
-    doctor=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Doctor Name and Department", to_field_name="id")
-    patient=forms.ModelChoiceField(queryset=models.Patient.objects.all().filter(status=True),empty_label="Patient Name", to_field_name="id")
+    doctor=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Doctor Name and Department", to_field_name="user_id")
+    patient=forms.ModelChoiceField(queryset=models.Patient.objects.all().filter(status=True),empty_label="Patient Name", to_field_name="user_id")
     class Meta:
         model= Appointment
-        fields=['date','start_time','end_time','description','status','state']
+        fields=['date','start_time','end_time','description','status']
 
 
 class PatientAppointmentForm(forms.ModelForm):
     doctor=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Doctor Name and Department", to_field_name="user_id")
     class Meta:
         model= Appointment
-        fields=['date','start_time','end_time','description','status','state']
+        fields=['date','start_time','end_time','description','status']
 
 
 #for contact us page

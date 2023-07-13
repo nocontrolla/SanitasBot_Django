@@ -3,6 +3,10 @@ from . import views
 from django.contrib.auth.views import LoginView,LogoutView
 
 urlpatterns = [
+    
+    path("admin-prescription", views.admin_prescription),
+    path("admin-add-medicine", views.admin_add_medicine),
+    
     path("add-prescription", views.create_prescription),
     path("remove-prescription", views.delete_prescription),
 

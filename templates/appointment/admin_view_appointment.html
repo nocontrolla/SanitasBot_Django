@@ -25,8 +25,8 @@ written By : Brian Godwin
  
 -->
 <div class="container">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
+  <div class="panel panel-primary"  style="border-color:#106e3e">
+    <div class="panel-heading" style="background-color:#106e3e">
       <h6 class="panel-title">Appointments</h6>
     </div>
     <table class="table table-hover" id="dev-table">
@@ -36,14 +36,30 @@ written By : Brian Godwin
           <th>Patient Name</th>
           <th>Description</th>
           <th>Date</th>
+          <th>Starting Time</th>
+          <th>Ending Time</th>
         </tr>
       </thead>
       {% for a in appointments %}
       <tr>
-        <td> {{a.doctorName}}</td>
-        <td>{{a.patientName}}</td>
-        <td>{{a.description}}</td>
-        <td>{{a.appointmentDate}}</td>
+          <td>
+              {% for d in doctors %}
+                {% if a.doctor == d.user_id %}
+                  {{d}}
+                {% endif %}
+              {% endfor %}
+          </td>
+          <td>
+            {% for p in patients %}
+              {% if a.patient == p.user_id %}
+                {{p}}
+              {% endif %}
+            {% endfor %}
+          </td>
+          <td>{{a.description}}</td>
+          <td>{{a.date}}</td>
+          <td>{{a.start_time}}</td>
+          <td>{{a.end_time}}</td>
       </tr>
       {% endfor %}
     </table>

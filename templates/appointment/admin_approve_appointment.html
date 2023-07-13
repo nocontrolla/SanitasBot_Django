@@ -24,7 +24,7 @@ written By : Brian Godwin
  
 -->
 <div class="container">
-  <div class="panel panel-primary">
+  <div class="panel panel-primary" style="border-color:#106e3e">
     <div class="panel-heading">
       <h6 class="panel-title">Appointment Approvals Required</h6>
     </div>
@@ -41,10 +41,21 @@ written By : Brian Godwin
       </thead>
       {% for a in appointments %}
       <tr>
-        <td> {{a.doctorName}}</td>
-        <td>{{a.patientName}}</td>
+        <td>
+          {% for d in doctor %}
+            {% if d.user_id == a.doctor %}
+              {{d}}
+            {% endif %}
+          {% endfor %}
+        </td>
+        <td>
+          {% for p in patient %}
+            {% if p.user_id == a.patient %}
+              {{p}}
+            {% endif %}
+          {% endfor %}
         <td>{{a.description}}</td>
-        <td>{{a.appointmentDate}}</td>
+        <td>{{a.date}}</td>
         <td><a class="btn btn-primary btn-xs" href="{% url 'approve-appointment' a.id  %}"><span class="glyphicon glyphicon-ok"></span></a></td>
         <td><a class="btn btn-danger btn-xs" href="{% url 'reject-appointment' a.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>

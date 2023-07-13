@@ -1,18 +1,17 @@
 from django.db import models
 from hospitalregister.models import Patient, Doctor
 
-
 # Create your models here.
 class Appointment(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    patient = models.PositiveIntegerField(null=True)
+    doctor = models.PositiveIntegerField(null=True)
     date = models.DateField(blank=True)
-    start_time = models.DateTimeField(blank=True)
-    end_time = models.DateTimeField(blank=True, null=True)
+    start_time = models.TimeField(blank=True)
+    end_time = models.TimeField(blank=True, null=True)
     status = models.BooleanField(default=False)
     description = models.CharField(max_length=255)
-    state = models.CharField(choices=[('Pending', 'Pending'), ('Completed', 'Completed')], default='Pending',max_length=10)
-
+    state = models.CharField(choices=[('Pending', 'Pending'), ('Completed', 'Completed')], default='Pending',max_length=20)
+        
     def __str__(self):
         return "Patient - {} Doc- {} At {} from {} to {}".format(self.patient, self.doctor, self.date, self.start_time, self.end_time)
 

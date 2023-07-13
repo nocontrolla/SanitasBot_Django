@@ -13,7 +13,7 @@ urlpatterns = [
 
 
 
-    path("doctor-approve-appointment", views.doctor_approve_appointment_view),
+    path("doctor-approve-appointment", views.doctor_approve_appointment_view, name='doctor-approve-appointment'),
     path('docapprove-appointment/<int:pk>', views.docapprove_appointment_view,name='docapprove-appointment'),
     path('docreject-appointment/<int:pk>', views.docreject_appointment_view,name='docreject-appointment'),
     path('doctor-appointment', views.doctor_appointment_view,name='doctor-appointment'),
