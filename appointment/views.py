@@ -16,12 +16,20 @@ from appointment import models
 @login_required(login_url='hospital/doctorlogin')
 @user_passes_test(views.is_doctor)
 def doctor_approve_appointment_view(request):
-    #those whose approval are needed
-    appointments=models.Appointment.objects.all().filter(status=False)
-    patients = models.Patient.objects.all()
+    # #those whose approval are needed
+    # appointments=models.Appointment.objects.all().filter(status=False)
+    # patients = models.Patient.objects.all()
     doctors = models.Doctor.objects.all()
     
-    mydict={'appointments':appointments, 'patients':patients, 'doctors':doctors}   
+    doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
+    appointments=models.Appointment.objects.all().filter(status=True, doctor=request.user.id)
+    patientid=[]
+    for a in appointments:
+        patientid.append(a.patient)
+    patients=models.Patient.objects.all().filter(status=True,user_id__in=patientid)
+    appointments=zip(appointments,patients)
+    
+    mydict={'appointments':appointments, 'patients':patients, 'doctor':doctor, 'doctors':doctors}   
     return render(request,'appointment/doctor_approve_appointment.html', mydict)
 
 
@@ -70,10 +78,10 @@ def doctor_view_appointment_view(request):
     appointments=models.Appointment.objects.all().filter(status=True, doctor=request.user.id)
     patientid=[]
     for a in appointments:
-        patientid.append(a.patient_id)
+        patientid.append(a.patient)
     patients=models.Patient.objects.all().filter(status=True,user_id__in=patientid)
     appointments=zip(appointments,patients)
-    return render(request,'appointment/doctor_view_appointment.html',{'appointments':appointments,'doctor':doctor})
+    return render(request,'appointment/doctor_view_appointment.html',{'appointments':appointments,'doctor':doctor, 'patients': patients})
 
 
 

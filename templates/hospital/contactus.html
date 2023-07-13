@@ -1,14 +1,56 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en" dir="ltr">
-
+{% load widget_tweaks %}
+{% block content %}
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>Sanitas Healthcare  || bgame</title>
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
 
+    .note {
+      text-align: center;
+      height: 80px;
+      background: -webkit-linear-gradient(left, #106e3e, #1cbb6c);
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
 
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 1.5rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #106e3e;
+      color: #fff;
+    }
+
+    .menu {
+      top: 50px;
+    }
+  </style>
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
+<br><br>
 
 <body>
 
@@ -18,15 +60,25 @@
   <center>
     <h3 class='alert alert-success'>Send Us Your Valuable Feedback !</h3>
 
-    <form method="POST">
-      <!-- Very Important csrf Token -->
+    <form method="post">
       {% csrf_token %}
-      <div class="form-group">
-        <p>
-        <h3>{{ form.as_p }}</h3>
-        </p>
-        <br>
-        <input type="submit" value="Send Message" class='btn btn-primary btn-lg'>
+      <div class="container register-form">
+        <div class="form">
+          <div class="note">
+            <p>Contact Us</p>
+          </div>
+          <div class="form-content">
+            <div class="column">
+              <div class="col-md-12">
+                <p>
+                  <h3>{{ form.as_p }}</h3>
+                </p>
+                <br>
+              </div>
+            </div>
+            <button type="submit" class="btnSubmit">Send Feedback</button>
+          </div>
+        </div>
       </div>
     </form>
   </center>
@@ -35,5 +87,5 @@
 <!--
 developed By : Brian Godwin
 -->
-
+{% endblock content %}
 </html>

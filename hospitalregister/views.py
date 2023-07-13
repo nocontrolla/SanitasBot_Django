@@ -410,12 +410,13 @@ def reject_patient_view(request,pk):
 @user_passes_test(is_doctor)
 def doctor_dashboard_view(request):
     #for three cards
-    patientcount=DoctorPatient.objects.all().filter(assignedDoctor_id=request.user.id).count()
-    appointmentcount=Appointment.objects.all().filter(status=True,doctor_id=request.user.id).count()
+    doctor=Doctor.objects.get(user_id=request.user.id)
+    patientcount=DoctorPatient.objects.all().filter(assignedDoctor_id=doctor.id).count()
+    appointmentcount=Appointment.objects.all().filter(status=True,doctor=request.user.id).count()
     patientdischarged=PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
 
     #for  table in doctor dashboard
-    appointments=Appointment.objects.all().filter(status=True,doctor_id=request.user.id).order_by('-id')
+    appointments=Appointment.objects.all().filter(status=True,doctor=request.user.id).order_by('-id')
     patientid=[]
     for a in appointments:
         patientid.append(a.patient)
@@ -611,7 +612,7 @@ def contactus_view(request):
             message = sub.cleaned_data['Message']
             send_mail(str(name)+' || '+str(email),message,settings.EMAIL_HOST_USER, settings.EMAIL_RECEIVING_USER, fail_silently = False)
             return render(request, 'hospital/contactussuccess.html')
-    return render(request, 'hospital/contactus.html', {'form':sub})
+    return render(request, 'hospital/contactus.html', {'form':sub} )
 
 
 @login_required(login_url='patientlogin')
