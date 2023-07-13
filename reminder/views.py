@@ -1,8 +1,9 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import Prescription
-from .forms import PrescriptionForm, MedicineForm
+from .forms import PrescriptionForm, MedicineForm, SymptomForm, DiseaseForm
 from hospitalregister.models import Doctor
 from . import models
 
@@ -27,7 +28,7 @@ def admin_add_medicine(request):
         medicineform = MedicineForm(request.POST)
         if medicineform.is_valid():
             medicineform.save()
-            return redirect('admin-prescription')
+            return HttpResponseRedirect('admin-prescription')
     else:
         form = MedicineForm()
         
@@ -95,3 +96,55 @@ def search_medicine_view(request):
 
     return render(request,'reminder/patient_list_medicine.html',{'patient':patient,'medicines':medicines})
 
+def admin_medical_information(request):
+    return render(request, 'reminder/admin_medical_information.html')
+
+
+
+
+
+def admin_add_symptom(request):
+    symptom = SymptomForm()
+    
+    mydict={'symptom':symptom,}
+    
+    if request.method == 'POST':  # Check if the user is a Doctor
+        symptom = SymptomForm(request.POST)
+        if symptom.is_valid():
+            symptom.save()
+            return redirect('/reminder/admin-view-symptoms')  # Redirect if the user is not a Doctor
+    else:
+        form = DiseaseForm()
+    
+    return render(request, 'reminder/admin_add_symptoms.html', context=mydict,)
+
+
+
+def admin_view_symptoms(request):
+    symptoms = models.Symptom.objects.all()
+    
+    return render(request, 'reminder/admin_view_symptoms.html', {'symptoms':symptoms})
+
+
+
+def admin_view_diseases(request):
+    diseases = models.Disease.objects.all()
+        
+    return render(request, 'reminder/admin_view_diseases.html', {'diseases':diseases})
+
+
+def admin_add_disease(request):
+    disease = DiseaseForm()
+    
+    mydict={'disease':disease,}
+    
+    if request.method == 'POST':  # Check if the user is a Doctor
+        disease = DiseaseForm(request.POST)
+        if disease.is_valid():
+            disease.save()
+            return redirect('/reminder/admin-view-diseases')  # Redirect if the user is not a Doctor
+    else:
+        form = MedicineForm()
+    
+    return render(request, 'reminder/admin_add_disease.html', context=mydict,)
+    
