@@ -34,7 +34,7 @@ class PatientDisease(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
     diagnosis_date = models.DateField()
-
+    
 
 class PatientSymptom(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)

@@ -4,10 +4,12 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import Prescription
 from .forms import PrescriptionForm, MedicineForm, SymptomForm, DiseaseForm
-from hospitalregister.models import Doctor
+from hospitalregister.models import Doctor, Patient
 from . import models
 
 # Create your views here.
+@login_required(login_url='hospital/adminlogin')
+@login_required(login_url='hospital/doctorlogin')
 def prescription_list(request):
     prescriptions = Prescription.objects.all()
     return render(request, 'reminder/prescription_list.html', {'prescriptions': prescriptions})
@@ -35,7 +37,7 @@ def admin_add_medicine(request):
     return render(request, 'reminder/add_new_medicine.html', context=mydict, )
 
 
-# @login_required(login_url='hospital/adminlogin')
+@login_required(login_url='hospital/adminlogin')
 @login_required(login_url='hospital/doctorlogin')
 def create_prescription(request):
     prescriptionform = PrescriptionForm()
@@ -45,40 +47,46 @@ def create_prescription(request):
         prescriptionform = PrescriptionForm(request.POST)
         if prescriptionform.is_valid():
             prescriptionform.save()
+            doctor=Doctor.objects.filter(user_id=request.user.id)
+            patient=Patient.objects.all()
             return redirect('doctor-view-prescription')  # Redirect if the user is not a Doctor
+            
     else:
         form = PrescriptionForm()
     return render(request, 'reminder/create_prescription.html', context=mydict,)
 
-
+@login_required(login_url='hospital/adminlogin')
 def delete_prescription(request, prescription_id):
     if isinstance(request.user, models.Doctor):  # Check if the user is a Doctor
         prescription = get_object_or_404(Prescription, id=prescription_id)
         prescription.delete()
     return redirect('prescription_list')
 
+@login_required(login_url='hospital/doctorlogin')
 def doctor_view_prescription(request):
 
 
     return render(request, 'reminder/doctor_prescription.html')
 
-
+@login_required(login_url='hospital/patientlogin')
 def patient_view_prescription(request):
     return render(request, 'reminder/patient_prescription.html')
 
 
-
+@login_required(login_url='hospital/adminlogin')
+@login_required(login_url='hospital/doctorlogin')
 def list_medicines(request):
     medicines = models.Medicine.objects.all()
 
     return render(request, 'reminder/patient_list_medicine.html', {'medicines': medicines})
 
-
+@login_required(login_url='hospital/adminlogin')
+@login_required(login_url='hospital/doctorlogin')
 def view_prescription(request):
     # patient = request.user  # Assuming the authenticated user is the patient
     this = request.user
     patient = models.Patient.objects.get(user_id=this)
-    doctor_patient = models.DoctorPatient.objects.get(patientId_id = patient.id)
+    doctor_patient = models.DoctorPatient.objects.filter(patientId_id = patient.id).first()
 
     prescriptions = Prescription.objects.filter(patient_doctor_id=doctor_patient.id)
 
@@ -87,8 +95,9 @@ def view_prescription(request):
     return render(request, 'reminder/view_prescription.html', {'prescriptions': prescriptions , 'medicines': medicines})
 
 
+@login_required(login_url='hospital/doctorlogin')
 def search_medicine_view(request):
-    # patient=models.Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
+    patient=models.Patient.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
     
     # whatever user write in search box we get in query
     query = request.GET['query']
@@ -96,13 +105,15 @@ def search_medicine_view(request):
 
     return render(request,'reminder/patient_list_medicine.html',{'patient':patient,'medicines':medicines})
 
+
+@login_required(login_url='hospital/adminlogin')
 def admin_medical_information(request):
     return render(request, 'reminder/admin_medical_information.html')
 
 
 
 
-
+@login_required(login_url='hospital/adminlogin')
 def admin_add_symptom(request):
     symptom = SymptomForm()
     
@@ -119,20 +130,20 @@ def admin_add_symptom(request):
     return render(request, 'reminder/admin_add_symptoms.html', context=mydict,)
 
 
-
+@login_required(login_url='hospital/adminlogin')
 def admin_view_symptoms(request):
     symptoms = models.Symptom.objects.all()
     
     return render(request, 'reminder/admin_view_symptoms.html', {'symptoms':symptoms})
 
 
-
+@login_required(login_url='hospital/adminlogin')
 def admin_view_diseases(request):
     diseases = models.Disease.objects.all()
         
     return render(request, 'reminder/admin_view_diseases.html', {'diseases':diseases})
 
-
+@login_required(login_url='hospital/adminlogin')
 def admin_add_disease(request):
     disease = DiseaseForm()
     

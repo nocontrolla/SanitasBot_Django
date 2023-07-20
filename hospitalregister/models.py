@@ -70,7 +70,7 @@ class DoctorPatient(models.Model):
     patientId=models.ForeignKey(Patient, on_delete=models.CASCADE)
     assignedDoctor=models.ForeignKey(Doctor, on_delete=models.CASCADE)
     admission_date=models.DateField(default=timezone.now)
-    end_admission=models.DateField(default=timezone.now)
+    end_admission=models.DateField(null=True,blank=True)
 
     @property
     def get_patient_name(self):

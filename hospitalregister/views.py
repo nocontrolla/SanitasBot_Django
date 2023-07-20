@@ -254,6 +254,86 @@ def admin_add_doctor_view(request):
     return render(request,'hospital/admin_add_doctor.html',context=mydict)
 
 
+@login_required(login_url='hospital/doctorlogin')
+def doctor_assign_patient_disease_view(request):
+    patient_disease = forms.PatientDiseaseForm()
+    
+    
+    doctor = Doctor.objects.get(user_id=request.user.id)
+    doctor_patient = DoctorPatient.objects.all().filter(assignedDoctor=doctor.id)
+    
+    patient = Patient.objects.all()
+        
+    mydict={'doctor':doctor, 'patient':patient, 'patient_disease':patient_disease, 'doctor_patient':doctor_patient}
+    
+    if request.method == 'POST':  # Check if the user is a Doctor
+        patient_disease = forms.PatientDiseaseForm(request.POST)
+        if patient_disease.is_valid():
+            patient_disease.save()
+            return redirect('/hospital/doctor-patient')  # Redirect if the user is not a Doctor
+    else:
+        form = forms.PatientDiseaseForm()
+    
+    
+    return render(request, 'hospital/doctor_assign_patient_disease.html', context=mydict)
+
+
+
+@login_required(login_url='hospital/doctorlogin')
+def doctor_assign_patient_symptom_view(request):
+    patient_symptom = forms.PatientSymptomForm
+        
+    doctor = Doctor.objects.get(user_id=request.user.id)
+    
+    doctor_patient = DoctorPatient.objects.filter(assignedDoctor_id=doctor.id)
+         
+    
+    mydict={'doctor':doctor, 'patient_symptom':patient_symptom, 'doctor_patient':doctor_patient}
+    
+    if request.method == 'POST':  # Check if the user is a Doctor
+        patient_symptom = forms.PatientSymptomForm(request.POST)
+        if patient_symptom.is_valid():
+            patient_symptom.save()
+            return redirect('/hospital/doctor-patient')  # Redirect if the user is not a Doctor
+    else:
+        form = forms.PatientSymptomForm()
+    
+    
+    return render(request, 'hospital/doctor_assign_patient_symptom.html', context=mydict)
+
+
+
+@login_required(login_url='hospital/adminlogin')
+def admin_assign_doctor_patient_view(request):
+    doctor_patient = forms.DoctorPatientForm()
+    
+    doctor = Doctor.objects.all()
+    patient = Patient.objects.all()
+        
+    mydict={'doctor':doctor, 'patient':patient, 'doctor_patient':doctor_patient}
+    
+    if request.method == 'POST':  # Check if the user is a Doctor
+        doctor_patient = forms.DoctorPatientForm(request.POST)
+        if doctor_patient.is_valid():
+            doctor_patient.save()
+            return redirect('/hospital/admin-doctor')  # Redirect if the user is not a Doctor
+    else:
+        form = forms.DoctorPatientForm()
+    
+    
+    return render(request, 'hospital/admin_assign_doctor_patient.html', context=mydict)
+
+
+@login_required(login_url='hospital/adminlogin')
+@user_passes_test(is_admin)
+def doctor_patient_relation_view(request):
+    
+    doctor_patient = DoctorPatient.objects.all()
+    doctor = Doctor.objects.all()
+    patient = Patient.objects.all()
+    mydict={'doctor_patient': doctor_patient, 'doctor':doctor, 'patient':patient}
+    
+    return render(request, 'hospital/doctor_patient_relation.html', context=mydict)
 
 
 @login_required(login_url='hospital/adminlogin')
@@ -557,7 +637,7 @@ def discharge_patient_view(request,pk):
 @user_passes_test(is_patient)
 def patient_dashboard_view(request):
     patient=Patient.objects.get(user_id=request.user.id)
-    patient_intermediate=DoctorPatient.objects.get(patientId_id=patient.id)
+    patient_intermediate=DoctorPatient.objects.filter(patientId_id=patient.id).first()
     doctor=Doctor.objects.get(id=patient_intermediate.assignedDoctor_id)
     mydict={
     'patient':patient,

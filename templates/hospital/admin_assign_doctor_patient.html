@@ -1,0 +1,107 @@
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+<head>
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      background: -webkit-linear-gradient(left, #106e3e, #1cbb6c);
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 1.5rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+
+    .menu {
+      top: 50px;
+    }
+  </style>
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<br><br>
+{% if message %}
+<script>
+  var a = "{{message}}";
+  alert(a);
+</script>
+
+{% endif %}
+
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="container register-form">
+      <div class="form">
+        <div class="note">
+          <p>Assign Patient to a Doctor</p>
+        </div>
+        <div class="form-content">
+          <div class="row">
+            <div class="col-md-12">
+              
+              <a>Choose the Patient to assign a Doctor</a>
+              <div class="form-group">
+                {% render_field doctor_patient.patientId class="form-control" placeholder="Select Patient" %}
+              </div>
+
+              <a>Choose Doctor to be assigned to a patient</a>
+              <div class="form-group">
+                {% render_field doctor_patient.assignedDoctor class="form-control" placeholder="Medicine Name" %}
+              </div>
+
+              <div class="form-group">
+                <a>Start of Admission with the Doctor and the Patient</a>
+                {% render_field doctor_patient.admission_date class="form-control" type="date" placeholder="Frequency" %}
+              </div>
+
+              <div class="form-group">
+                <a>End of Admission for the Doctor and the Patient</a>
+                {% render_field doctor_patient.end_admission class="form-control" type="date" placeholder="Dosage" %}
+              </div>
+
+            </div>
+
+          </div>
+          <button type="submit" class="btnSubmit"  style="background: #106e3e">Create Relation</button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </form>
+
+  {% comment %} {{ form.as_p }}
+  <button type="submit">Create</button> {% endcomment %}
+{% endblock content %}

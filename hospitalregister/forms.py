@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from . import models
-
+from .models import Doctor
+from reminder import models
     
 #for admin signup
 class AdminSignupForm(forms.ModelForm):
@@ -33,7 +33,7 @@ class DoctorUserForm(forms.ModelForm):
 
 class DoctorForm(forms.ModelForm):
     class Meta:
-        model=models.Doctor
+        model=Doctor
         fields=['address','mobile','department','status','profile_pic']
 
 
@@ -48,15 +48,10 @@ class PatientUserForm(forms.ModelForm):
         'password': forms.PasswordInput()
         }
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     password = cleaned_data.get('password')
-    #     confirm_password = cleaned_data.get('confirm_password')
-
-    #     if password and confirm_password and password != confirm_password:
-    #         raise forms.ValidationError('Passwords do not match.')
-
-    #     return cleaned_data
+class DoctorPatientForm(forms.ModelForm):
+    class Meta:
+        model = models.DoctorPatient
+        fields=['patientId','assignedDoctor','admission_date', 'end_admission', ]
         
 
 class PatientForm(forms.ModelForm):
@@ -74,3 +69,16 @@ class ContactusForm(forms.Form):
     Name = forms.CharField(max_length=30)
     Email = forms.EmailField()
     Message = forms.CharField(max_length=500,widget=forms.Textarea(attrs={'rows': 3, 'cols': 30}))
+    
+    
+class PatientSymptomForm(forms.ModelForm):
+        class Meta:
+            model = models.PatientSymptom
+            fields = ['patient', 'symptom', 'observed_date', 'duration_days', 'severity_level']
+    
+    
+
+class PatientDiseaseForm(forms.ModelForm):
+        class Meta:
+            model = models.PatientDisease
+            fields = ['patient', 'disease', 'diagnosis_date']

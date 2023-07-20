@@ -18,9 +18,11 @@ urlpatterns = [
     path('doctorsignup', views.doctor_signup_view,name='doctorsignup'),
     path('patientsignup', views.patient_signup_view, name='patientsignup'),
 
-    path('adminlogin', LoginView.as_view(template_name='hospital/adminlogin.html')),
-    path('doctorlogin', LoginView.as_view(template_name='hospital/doctorlogin.html')),
-    path('patientlogin', LoginView.as_view(template_name='hospital/patientlogin.html')),
+    path('adminlogin', LoginView.as_view(template_name='hospital/adminlogin.html'), name='adminlogin'),
+    path('doctorlogin', LoginView.as_view(template_name='hospital/doctorlogin.html'), name='adoctorlogin'),
+    path('patientlogin', LoginView.as_view(template_name='hospital/patientlogin.html'), name='patientlogin'),
+    path('admin-assign-doctor-patient', views.admin_assign_doctor_patient_view, name='admin-assign-doctor-patient'),
+    path('doctor-patient-relation', views.doctor_patient_relation_view, name='doctor-patient-relation'),
 
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
     path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
@@ -28,6 +30,7 @@ urlpatterns = [
 
     path('admin-dashboard', views.admin_dashboard_view),
 
+   
     path('admin-doctor', views.admin_doctor_view,name='admin-doctor'),
     path('admin-view-doctor', views.admin_view_doctor_view,name='admin-view-doctor'),
     path('delete-doctor-from-hospital/<int:pk>', views.delete_doctor_from_hospital_view,name='delete-doctor-from-hospital'),
@@ -55,6 +58,9 @@ urlpatterns = [
 ]
 
 urlpatterns +=[
+    
+    path('doctor-assign-patient-disease', views.doctor_assign_patient_disease_view, name='doctor-assign-patient-disease'),
+    path('doctor-assign-patient-symptom', views.doctor_assign_patient_symptom_view, name='doctor-assign-patient-symptom'),
     path('doctor-dashboard', views.doctor_dashboard_view,name='doctor-dashboard'),
     path('search', views.search_view,name='search'),
 
